@@ -1,7 +1,7 @@
-# alert_bot.py - Add dummy server for Render Web Service
+# alert_bot.py - Updated for proper HEAD support on Render
 from pyrogram import Client, filters
 import os
-import threading  # For running dummy server in background
+import threading  # For dummy server in background
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 # ─── CONFIG (environment variables) ───
@@ -20,7 +20,7 @@ async def first_people_detector(client, message):
 
     text = message.text.lower()
     if "first" in text and "people" in text:
-        alert = "9134816284 OPAY."  # Your custom message
+        alert = "9134816284 OPAY"  # Your custom message
 
         for username in ALERT_TO:
             try:
@@ -29,20 +29,24 @@ async def first_people_detector(client, message):
             except Exception as e:
                 print(f"Failed to send to @{username}: {e}")
 
-# Dummy HTTP server to satisfy Render's port binding (runs in background thread)
+# Dummy HTTP server (now handles HEAD + GET)
 class DummyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b"OK")
 
+    def do_HEAD(self):  # ←←← Added this to fix 501/503
+        self.send_response(200)
+        self.end_headers()
+
 def run_dummy_server():
-    port = int(os.environ.get("PORT", 8080))  # Render sets PORT env var
+    port = int(os.environ.get("PORT", 8080))  # Render sets PORT
     server = HTTPServer(("", port), DummyHandler)
     print(f"Dummy server running on port {port}")
     server.serve_forever()
 
-# Start dummy server in thread
+# Start dummy server
 threading.Thread(target=run_dummy_server, daemon=True).start()
 
 print("Bot started — monitoring @stunner75trading for 'first' + 'people'...")
