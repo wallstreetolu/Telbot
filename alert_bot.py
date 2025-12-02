@@ -20,7 +20,7 @@ async def first_people_detector(client, message):
 
     text = message.text.lower()
     if "first" in text and "people" in text:
-        alert = "9134816284 OPAY"  # Your custom message
+        alert = "9134816284 OPAY."  # Your custom message
 
         for username in ALERT_TO:
             try:
