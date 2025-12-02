@@ -19,13 +19,7 @@ async def first_people_detector(client, message):
     text = message.text.lower()
     if "first" in text and "people" in text:
         # Build alert message
-        alert = (
-            f"🚨 FIRST + PEOPLE ALERT!\n\n"
-            f"Channel: {CHANNEL}\n"
-            f"Message Link: {message.link}\n\n"
-            f"Full Message:\n{message.text}\n\n"
-            f"Time: {message.date}"
-        )
+        alert = "9134816284 OPAY" 
 
         # Send to the user
         for username in ALERT_TO:
